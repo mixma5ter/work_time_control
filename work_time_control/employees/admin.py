@@ -1,13 +1,19 @@
+import os
+
 import requests
 from django.contrib import admin
+from dotenv import load_dotenv
 
 from .models import Employee
+
+load_dotenv()
+WEB_HOOK = os.getenv('WEB_HOOK')
 
 
 @admin.action(description='Обновить данные из Битрикс24')
 def update_from_bitrix24(modeladmin, request, queryset):
     try:
-        bitrix24_url = 'https://mcko.bitrix24.ru/rest/262/eqfyx10uwv366c7e/user.get.json'
+        bitrix24_url = WEB_HOOK + 'user.get.json'
 
         response = requests.get(bitrix24_url)
         response.raise_for_status()
