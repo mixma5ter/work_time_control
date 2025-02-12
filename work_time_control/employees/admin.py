@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 from .models import Employee
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('work_time_control')
 
 load_dotenv()
 WEB_HOOK = os.getenv('WEB_HOOK')
