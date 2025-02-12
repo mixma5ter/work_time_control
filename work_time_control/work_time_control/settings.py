@@ -14,7 +14,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
-WEB_HOOK = os.getenv('WEB_HOOK')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
