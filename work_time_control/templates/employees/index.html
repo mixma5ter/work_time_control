@@ -60,7 +60,7 @@
                     $('#checkin-time').text(data.time);
 
                     let statusClass = data.is_active ? 'active' : 'inactive';
-                    $('#employee-status').text(data.is_active ? 'Активен' : 'Неактивен').removeClass('active inactive').addClass(statusClass);
+                    $('#employee-status').text(data.is_active ? 'Вход' : 'Выход').removeClass('active inactive').addClass(statusClass);
                 }
             },
             error: function(error) {
