@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Work Time Control</title>
+    <style>
+        #employee-info {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .active {
+            color: green;
+        }
+
+        .inactive {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h1>Check-in Events</h1>
+<div id="employee-info">
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script>
+    function updateEmployeeInfo() {
+        $.ajax({
+            url: '/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.message) {
+                    $('#employee-info').html('<p>' + data.message + '</p>');
+                } else {
+                    if (!$('#employee-name').length) {
+                        let employeeInfo = `
+                            <div class="info-row"><span>Имя:</span> <span id="employee-name"></span></div>
+                            <div class="info-row"><span>Номер карты:</span> <span id="card-number"></span></div>
+                            <div class="info-row"><span>Время:</span> <span id="checkin-time"></span></div>
+                            <div class="info-row"><span>Активность:</span> <span id="employee-status"></span></div>
+                        `;
+                        $('#employee-info').append(employeeInfo);
+                    }
+
+                    $('#employee-name').text(data.name);
+                    $('#card-number').text(data.card_number);
+                    $('#checkin-time').text(data.time);
+
+                    let statusClass = data.is_active ? 'active' : 'inactive';
+                    $('#employee-status').text(data.is_active ? 'Активен' : 'Неактивен').removeClass('active inactive').addClass(statusClass);
+                }
+            },
+            error: function(error) {
+                console.error("Ошибка при получении данных:", error);
+                $('#employee-info').html("<p>Ошибка при получении данных</p>");
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        updateEmployeeInfo(); // Первоначальный вызов
+        setInterval(updateEmployeeInfo, 1000); // Обновление каждую секунду
+    });
+</script>
+</body>
+</html>
