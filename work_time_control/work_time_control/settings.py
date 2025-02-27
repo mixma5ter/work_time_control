@@ -17,6 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+LOCAL_DATABASE = True
 
 # IP адреса, при обращении с которых будет доступен DjDT
 INTERNAL_IPS = ['127.0.0.1']
@@ -73,7 +74,7 @@ WSGI_APPLICATION = 'work_time_control.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
+if LOCAL_DATABASE:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
