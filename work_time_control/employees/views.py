@@ -24,8 +24,6 @@ def index(request):
             last_employee = Employee.objects.latest('last_checkin')
             data = {
                 'name': last_employee.employee_name,
-                'card_number': last_employee.card_number,
-                'time': last_employee.last_checkin.strftime('%Y-%m-%d %H:%M:%S'),
                 'is_active': last_employee.is_active,
             }
             return JsonResponse(data)
@@ -36,8 +34,6 @@ def index(request):
             last_employee = Employee.objects.latest('last_checkin')
             context = {
                 'name': last_employee.employee_name,
-                'card_number': last_employee.card_number,
-                'time': last_employee.last_checkin.strftime('%Y-%m-%d %H:%M:%S'),
                 'is_active': last_employee.is_active,
             }
         except Employee.DoesNotExist:
