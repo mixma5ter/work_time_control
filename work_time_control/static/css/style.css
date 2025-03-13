@@ -10,6 +10,7 @@ body {
     background-size: 400% 400%;
     animation: gradientAnimation 20s ease infinite;
     color: white;
+    font-size: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-family: Arial, sans-serif;
 }
@@ -31,7 +32,7 @@ body {
 }
 
 #waiting-message {
-    font-size: 2em;
+    font-size: 1.8em;
     margin-bottom: 20px;
 }
 
@@ -49,7 +50,7 @@ body {
 
 #employee-info {
     text-align: center;
-    background-color: rgb(40, 74, 115);
+    background-color: rgba(40, 74, 115, 0.3);
     padding: 20px;
     border-radius: 10px;
 }
@@ -67,7 +68,7 @@ body {
 }
 
 .active {
-    color: green;
+    color: #00cb00;
 }
 
 .inactive {

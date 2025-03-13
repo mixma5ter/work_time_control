@@ -39,6 +39,8 @@
             dataType: 'json',
             success: function (data) {
                 if (data.message) {
+                    console.log(data.message);
+
                     $('#employee-info').html('<p>' + data.message + '</p>');
                     $('#waiting-screen').hide();
                     $('#employee-info').show();
@@ -46,11 +48,11 @@
                         $('#employee-info').hide();
                         $('#waiting-screen').show();
                     }, 5000);
-                } else if (data.last_checkin !== lastUpdateTime) {
 
+                } else if (data.last_checkin !== lastUpdateTime) {
                     console.log(data.last_checkin);
                     console.log(data.employee_name);
-                    console.log(data.is_active);
+                    console.log('Status: ' + data.is_active);
 
                     lastUpdateTime = data.last_checkin;
                     $('#waiting-screen').hide();
@@ -78,6 +80,7 @@
             },
             error: function (error) {
                 console.error("Ошибка при получении данных:", error);
+
                 $('#error-message').html("<p>Ошибка при получении данных</p>");
                 $('#waiting-screen').hide();
                 $('#error-message').show();
