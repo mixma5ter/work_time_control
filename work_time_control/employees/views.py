@@ -28,7 +28,7 @@ def index(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
             last_employee = Employee.objects.latest('last_checkin')
-            formatted_last_checkin = timezone.localtime(last_employee.last_checkin).strftime("%d %B %Y г., %H:%M")
+            formatted_last_checkin = timezone.localtime(last_employee.last_checkin).strftime("%d %B %Y г., %H:%M:%S")
 
             data = {
                 'card_number': last_employee.card_number,
