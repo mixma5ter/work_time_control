@@ -24,7 +24,7 @@
 
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
-    let lastUpdateTime = 0;
+    let lastUpdateTime = "";
 
     function updateCurrentTime() {
         const now = new Date();
@@ -46,7 +46,12 @@
                         $('#employee-info').hide();
                         $('#waiting-screen').show();
                     }, 5000);
-                } else if (data.last_checkin > lastUpdateTime) {
+                } else if (data.last_checkin !== lastUpdateTime) {
+
+                    console.log(data.last_checkin);
+                    console.log(data.employee_name);
+                    console.log(data.is_active);
+
                     lastUpdateTime = data.last_checkin;
                     $('#waiting-screen').hide();
                     $('#employee-info').show();

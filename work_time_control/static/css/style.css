@@ -6,9 +6,24 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: rgb(58, 110, 171);
+    background: linear-gradient(45deg, #3a6eab, #759fd6, #3a6eab);
+    background-size: 400% 400%;
+    animation: gradientAnimation 20s ease infinite;
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-family: Arial, sans-serif;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 #waiting-screen {
@@ -20,8 +35,15 @@ body {
     margin-bottom: 20px;
 }
 
+#error-message {
+    font-size: 0.8em;
+    color: red;
+    margin-top: 20px;
+}
+
 #current-time {
     font-size: 2em;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
@@ -38,17 +60,6 @@ body {
 
 .info-row span {
     font-weight: bold;
-}
-
-#waiting-message {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
-
-#error-message {
-    font-size: 0.8em;
-    color: red;
-    margin-top: 20px;
 }
 
 .hidden {
