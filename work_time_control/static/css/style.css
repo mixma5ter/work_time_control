@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgb(58, 110, 171);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+#waiting-screen {
+    text-align: center;
+}
+
+#waiting-message {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#current-time {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#employee-info {
+    text-align: center;
+    background-color: rgb(40, 74, 115);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.info-row {
+    margin: 10px 0;
+}
+
+.info-row span {
+    font-weight: bold;
+}
+
+#waiting-message {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#error-message {
+    font-size: 0.8em;
+    color: red;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.active {
+    color: green;
+}
+
+.inactive {
+    color: red;
+}

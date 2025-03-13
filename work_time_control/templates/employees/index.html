@@ -3,76 +3,93 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Work Time Control</title>
-    <style>
-        #employee-info {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .active {
-            color: green;
-        }
-
-        .inactive {
-            color: red;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <title>Контроль рабочего времени</title>
 </head>
 <body>
-<h1>Check-in Events</h1>
-<div id="employee-info">
+<img src="{% static 'img/mcko_logo_250_250.png' %}" alt="Logo" id="logo">
+<div id="waiting-screen">
+    <h1 id="waiting-message">Приложите пропуск к считывателю</h1>
+    <div id="current-time"></div>
+</div>
+<div id="employee-info" style="display: none;">
     {% if message %}
-        <p>{{ message }}</p>
+    <p>{{ message }}</p>
     {% endif %}
 </div>
+<div id="error-message" style="display: none;"></div>
 
-<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
+    let lastUpdateTime = 0;
+
+    function updateCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        $('#current-time').text(timeString);
+    }
+
     function updateEmployeeInfo() {
         $.ajax({
             url: '/',
             type: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 if (data.message) {
                     $('#employee-info').html('<p>' + data.message + '</p>');
-                } else {
+                    $('#waiting-screen').hide();
+                    $('#employee-info').show();
+                    setTimeout(function () {
+                        $('#employee-info').hide();
+                        $('#waiting-screen').show();
+                    }, 5000);
+                } else if (data.last_checkin > lastUpdateTime) {
+                    lastUpdateTime = data.last_checkin;
+                    $('#waiting-screen').hide();
+                    $('#employee-info').show();
+
                     if (!$('#employee-name').length) {
                         let employeeInfo = `
-                            <div class="info-row"><span>Имя:</span> <span id="employee-name"></span></div>
-                            <div class="info-row"><span>Активность:</span> <span id="employee-status"></span></div>
+                            <div class="info-row"><span id="checkin-time"></span></div>
+                            <div class="info-row"><span id="employee-name"></span></div>
+                            <div class="info-row"><span id="employee-status"></span></div>
                         `;
                         $('#employee-info').append(employeeInfo);
                     }
-
-                    $('#employee-name').text(data.name);
-                    $('#card-number').text(data.card_number);
-                    $('#checkin-time').text(data.time);
+                    $('#checkin-time').text(data.last_checkin);
+                    $('#employee-name').text(data.employee_name);
 
                     let statusClass = data.is_active ? 'active' : 'inactive';
                     $('#employee-status').text(data.is_active ? 'Вход' : 'Выход').removeClass('active inactive').addClass(statusClass);
+
+                    setTimeout(function () {
+                        $('#employee-info').hide();
+                        $('#waiting-screen').show();
+                    }, 5000);
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error("Ошибка при получении данных:", error);
-                $('#employee-info').html("<p>Ошибка при получении данных</p>");
+                $('#error-message').html("<p>Ошибка при получении данных</p>");
+                $('#waiting-screen').hide();
+                $('#error-message').show();
+                setTimeout(function () {
+                    $('#error-message').hide();
+                    $('#waiting-screen').show();
+                }, 5000);
             }
         });
     }
 
-    $(document).ready(function() {
-        updateEmployeeInfo(); // Первоначальный вызов
-        setInterval(updateEmployeeInfo, 1000); // Обновление каждую секунду
+    $(document).ready(function () {
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        updateEmployeeInfo();
+        setInterval(updateEmployeeInfo, 6000);
     });
 </script>
 </body>
