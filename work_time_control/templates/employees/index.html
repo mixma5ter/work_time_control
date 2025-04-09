@@ -93,11 +93,15 @@
     }
 
     $(document).ready(function () {
-        updateCurrentTime();
-        setInterval(updateCurrentTime, 1000);
+        // Время обновляем каждую минуту, используя setTimeout рекурсивно
+        function updateTimeEveryMinute() {
+            updateCurrentTime();
+            setTimeout(updateTimeEveryMinute, 60000); // 60000 мс = 1 минута
+        }
+        updateTimeEveryMinute(); // Запускаем первый раз
 
-        updateEmployeeInfo();
-        setInterval(updateEmployeeInfo, 6000);
+        // Информацию о сотруднике опрашиваем, например, каждые 2 секунды
+        setInterval(updateEmployeeInfo, 2000);
     });
 </script>
 </body>
