@@ -7,24 +7,10 @@ body {
     justify-content: center;
     height: 100vh;
     background: linear-gradient(45deg, #3a6eab, #759fd6, #3a6eab);
-    background-size: 400% 400%;
-    animation: gradientAnimation 20s ease infinite;
     color: white;
     font-size: 36px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-family: Arial, sans-serif;
-}
-
-@keyframes gradientAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 #waiting-screen {
