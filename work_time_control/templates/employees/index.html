@@ -49,7 +49,7 @@
                         $('#waiting-screen').show();
                     }, 5000);
 
-                } else if (data.last_checkin !== lastUpdateTime) {
+                } else {
                     console.log(data.last_checkin);
                     console.log(data.employee_name);
                     console.log('Status: ' + data.is_active);
@@ -96,8 +96,9 @@
         // Время обновляем каждую минуту, используя setTimeout рекурсивно
         function updateTimeEveryMinute() {
             updateCurrentTime();
-            setTimeout(updateTimeEveryMinute, 60000); // 60000 мс = 1 минута
+            setTimeout(updateTimeEveryMinute, 10000); // 10 сек
         }
+
         updateTimeEveryMinute(); // Запускаем первый раз
 
         // Информацию о сотруднике опрашиваем, например, каждые 2 секунды
