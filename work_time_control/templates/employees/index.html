@@ -25,6 +25,7 @@
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
     let lastUpdateTime = "";
+    let lastStatus = null;
 
     function updateCurrentTime() {
         const now = new Date();
@@ -49,7 +50,7 @@
                         $('#waiting-screen').show();
                     }, 5000);
 
-                } else {
+                } else if (data.is_active !== lastStatus) {
                     console.log(data.last_checkin);
                     console.log(data.employee_name);
                     console.log('Status: ' + data.is_active);
