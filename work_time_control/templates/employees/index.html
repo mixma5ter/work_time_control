@@ -25,7 +25,6 @@
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
     let lastUpdateTime = "";
-    let lastStatus = null;
 
     function updateCurrentTime() {
         const now = new Date();
@@ -40,7 +39,9 @@
             dataType: 'json',
             success: function (data) {
                 if (data.message) {
+                    console.group("Error message");
                     console.log(data.message);
+                    console.groupEnd();
 
                     $('#employee-info').html('<p>' + data.message + '</p>');
                     $('#waiting-screen').hide();
@@ -50,13 +51,14 @@
                         $('#waiting-screen').show();
                     }, 5000);
 
-                } else if (data.is_active !== lastStatus) {
+                } else if (data.last_checkin !== lastUpdateTime) {
+                    console.group("Updating employee info");
                     console.log(data.last_checkin);
                     console.log(data.employee_name);
                     console.log('Status: ' + data.is_active);
+                    console.groupEnd();
 
                     lastUpdateTime = data.last_checkin;
-                    lastStatus = data.is_active;
 
                     $('#waiting-screen').hide();
                     $('#employee-info').show();
@@ -82,7 +84,10 @@
                 }
             },
             error: function (error) {
+                console.group("AJAX Error");
                 console.error("Ошибка при получении данных:", error);
+                console.log("AJAX error:", error);
+                console.groupEnd();
 
                 $('#error-message').html("<p>Ошибка при получении данных</p>");
                 $('#waiting-screen').hide();
@@ -96,15 +101,10 @@
     }
 
     $(document).ready(function () {
-        // Время обновляем каждую минуту, используя setTimeout рекурсивно
-        function updateTimeEveryMinute() {
-            updateCurrentTime();
-            setTimeout(updateTimeEveryMinute, 10000); // 10 сек
-        }
+        // Время обновляем каждые 10 секунд
+        setInterval(updateCurrentTime, 10000);
 
-        updateTimeEveryMinute(); // Запускаем первый раз
-
-        // Информацию о сотруднике опрашиваем, например, каждые 2 секунды
+        // Информацию о сотруднике опрашиваем каждые 2 секунды
         setInterval(updateEmployeeInfo, 2000);
     });
 </script>
