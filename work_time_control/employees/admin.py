@@ -13,17 +13,38 @@ load_dotenv()
 WEB_HOOK = os.getenv('WEB_HOOK')
 
 
+def get_all_users():
+    url = WEB_HOOK + "user.get.json"
+    start = 0
+    all_users = []
+
+    while True:
+        params = {"start": start}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+
+        data = response.json()
+        users = data.get("result", [])
+        all_users.extend(users)
+
+        logger.info(f"Загружено {len(users)} сотрудников (всего {len(all_users)})")
+
+        # если есть "next", берем следующую страницу
+        if "next" in data:
+            start = data["next"]
+        else:
+            break
+
+    return all_users
+
+
 @admin.action(description='Обновить данные из Битрикс24')
 def update_from_bitrix24(modeladmin, request, queryset):
     try:
         bitrix24_url = WEB_HOOK + 'user.get.json'
         logger.info(f"Bitrix24 URL: {bitrix24_url}")
 
-        response = requests.get(bitrix24_url)
-        response.raise_for_status()
-        logger.info(f"Response status code: {response.status_code}")
-        logger.info(f"Raw response content: {response.content}")
-        users = response.json()['result']
+        users = get_all_users()
 
         filtered_users = [user for user in users if 'UF_USR_1739295687230' in user]
 
