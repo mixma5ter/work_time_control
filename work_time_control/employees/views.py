@@ -28,6 +28,7 @@ def index(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
             last_employee = Employee.objects.latest('last_checkin')
+            all_employees = list(Employee.objects.all().order_by('is_active').values('employee_name', 'is_active'))
             formatted_last_checkin = timezone.localtime(last_employee.last_checkin).strftime("%d %B %Y г., %H:%M:%S")
 
             data = {
@@ -35,6 +36,7 @@ def index(request):
                 'employee_name': last_employee.employee_name,
                 'last_checkin': formatted_last_checkin,
                 'is_active': last_employee.is_active,
+                'all_employees': all_employees,
             }
             return JsonResponse(data)
         except Employee.DoesNotExist:
@@ -44,6 +46,7 @@ def index(request):
     else:
         try:
             last_employee = Employee.objects.latest('last_checkin')
+            all_employees = Employee.objects.all().order_by('-last_checkin')
             formatted_last_checkin = timezone.localtime(last_employee.last_checkin).strftime("%d %B %Y г., %H:%M")
 
             context = {
@@ -51,6 +54,7 @@ def index(request):
                 'employee_name': last_employee.employee_name,
                 'last_checkin': formatted_last_checkin,
                 'is_active': last_employee.is_active,
+                'all_employees': all_employees,
             }
         except Employee.DoesNotExist:
             context = {'message': 'No checkins yet'}
